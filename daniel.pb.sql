@@ -156,3 +156,11 @@ select nome, carga_horaria
 from cursos
 where carga_horaria < 70;
 
+select alunos.nome as nome_alunos, cursos.nome as cursos
+from alunos,cursos,matriculas
+where alunos.id = matriculas.alunos_id
+and cursos.id = matriculas.cursos_id;
+
+select nome
+from cursos
+where carga_horaria =40 or carga_horaria = 80;
