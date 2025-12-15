@@ -164,3 +164,139 @@ and cursos.id = matriculas.cursos_id;
 select nome
 from cursos
 where carga_horaria =40 or carga_horaria = 80;
+
+
+/************************************************************************************/
+
+create database clinicaMedica;
+
+use clinicaMedica;
+
+create table medico(
+CRM int primary key,
+nome varchar(50) not null,
+email varchar(20) not null,
+telefone varchar (50),
+data_nasc date,
+especializacao varchar(25)
+check (especializacao in ('Carduologista','Nutricionista'))
+);
+
+drop table medico;
+
+create table paciente(
+id int primary key,
+cpf int unique,
+nome varchar(100),
+endereco varchar(75),
+telefone int unique,
+tipo_exame varchar(25)
+check (tipo_exame in ('laboratorial','clinico'))
+);
+
+create table consulta(
+id_medico int not null,
+id_paciente int not null,
+foreign key (id_medico) references medico(CRM),
+foreign key (id_paciente)references paciente(id),
+data_consult date not null,
+tipo_pag varchar(20) unique
+);
+
+ALTER TABLE paciente
+MODIFY cpf VARCHAR(15) UNIQUE;
+
+INSERT INTO medico
+(CRM, nome, email, telefone, data_nasc, especializacao)
+VALUES
+('5246','Daniel','carlos@email','988254868','2000-05-12','cardiologista'),
+('3549','Gabriel','daniel@email','986845288','1997-02-12','nutricionista'),
+('8549','Junior','junio@mail','9868452248','1999-03-12','nutricionista');
+
+ALTER TABLE medico
+DROP CHECK medico_chk_1;
+
+insert into paciente(id,cpf,nome,endereco,telefone,tipo_exame)
+values
+('12','12345489854','carlos','irineu','1856565','prostata'),
+('13','12345489865','maria','irineu','1956575','mamografia'),
+('14','12345489885','mariana','irineu','1956565','ultrassom');
+
+insert into consulta(id_medico,id_paciente,data_consult,tipo_pag)
+values
+(3549,13,'2000-05-12','debito'),
+(8549,12,'2004-11-23','dinheiro'),
+(5246,14,'2005-12-01','Pix');
+select * from paciente;
+
+
+
+DELETE FROM consulta WHERE id_paciente = 12;
+DELETE FROM paciente WHERE id = 12;
+
+DELETE FROM consulta WHERE id_paciente = 14;
+update paciente set telefone = 88354958 where id= 14;
+
+DELETE FROM consulta WHERE id_paciente = 13;
+update paciente set telefone = 87348115 where id= 14;
+
+select*from consulta;
+select*from medico;
+select*from paciente;
+
+
+/*______________________________________________________________________________________________________/*
+
+create database sge;
+use sge;
+
+/*Criando a primeira tabela*/
+create table alunos (
+id_alunos int auto_increment primary key,
+nome varchar(100),
+data_nasc date
+);
+
+ALTER TABLE alunos
+ADD COLUMN id_curso INT;
+
+
+ALTER TABLE alunos
+add constraint fk_alunos_curso
+ foreign key (id_curso)  references Curso(id_curso);
+
+/*Adicionar coluna na primeira tabela*/
+alter table Curso
+add column preco decimal (10,2);
+
+
+/*Criando a segunda tabela*/
+create table Curso ( 
+id_curso int auto_increment primary key ,
+nome_curso varchar(75), 
+carga_horaria int, 
+disciplinas varchar(75),
+horarios datetime
+); 
+
+/*Inserindo valores*/
+
+insert into curso (id_alunos,nome_curso,carga_horaria,disciplinhas,horarios,preco)
+values
+(2,'Tecnologia da Informação',1548,'matematica','2000-05-19',2000.10),
+(3,'Ciencia da Computação',1888,'ciencia','2001-05-19',2002.10),
+(4,'Analise de Desenvolvimento',1889,'Dados','2002-06-19',2040.10);
+
+insert into alunos (id_curso,nome, data_nasc)
+values
+(2,'CARLOS DANIEL','2004-11-23'),
+(3,'CARLOS DANIEL','2004-11-24'),
+(4,'CARLOS DANIEL','2004-11-25');
+
+select * from alunos;
+
+select * from curso;
+
+SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE curso;
+SET FOREIGN_KEY_CHECKS = 1;
