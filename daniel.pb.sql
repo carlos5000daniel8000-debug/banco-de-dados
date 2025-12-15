@@ -287,11 +287,11 @@ values
 (3,'Ciencia da Computação',1888,'ciencia','2001-05-19',2002.10),
 (4,'Analise de Desenvolvimento',1889,'Dados','2002-06-19',2040.10);
 
-insert into alunos (id_curso,nome, data_nasc)
+insert into alunos (id_curso,nome, data_nasc,email,id_alunos)
 values
-(2,'CARLOS DANIEL','2004-11-23'),
-(3,'CARLOS DANIEL','2004-11-24'),
-(4,'CARLOS DANIEL','2004-11-25');
+(2,'CARLOS DANIEL','2004-11-23','daniel@gmail'),
+(3,'CARLOS DANIEL','2004-11-24','daniel@gmail1'),
+(4,'CARLOS DANIEL','2004-11-25','daniel@gmail2');
 
 select * from alunos;
 
@@ -300,3 +300,38 @@ select * from curso;
 SET FOREIGN_KEY_CHECKS = 0;
 DROP TABLE curso;
 SET FOREIGN_KEY_CHECKS = 1;
+
+/*Criando uma Terceira Tabela*/
+create table professor ( 
+id_professor int auto_increment primary key ,
+nome varchar(75), 
+carga_horaria int, 
+disciplinas varchar(75)
+); 
+
+insert into professor (id_professor,nome,carga_horaria,disciplinas)
+values
+(2,'SEFRAS',15,'Ciencia da Computação'),
+(3,'DANIEL',16,'Analise de Desenvolvimento de Dados'),
+(4,'ROMEU',17,'Desenvolvedor de Sistema'),
+(5,'CARLOS',18,'Matematica');
+
+select * from professor;
+
+
+/*Criando uma Terceira Tabela*/
+
+create table funcionario( 
+id_funcionario int auto_increment primary key ,
+nome varchar(75), 
+carga_horaria int, 
+funcao varchar(75)
+); 
+
+
+insert into funcionario (id_funcionario,nome,carga_horaria,funcao)
+values
+(14,'SEFRAS',155,'Professor'),
+(35,'DANIEL',166,'Cozinheiro'),
+(44,'ROMEU',147,'Higienização'),
+(54,'CARLOS',138,'Coordenação');
