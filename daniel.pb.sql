@@ -335,3 +335,12 @@ values
 (35,'DANIEL',166,'Cozinheiro'),
 (44,'ROMEU',147,'Higienização'),
 (54,'CARLOS',138,'Coordenação');
+
+SELECT * 
+FROM funcionario
+WHERE id_funcionario = 44;
+
+SELECT * 
+FROM funcionario
+WHERE carga_horaria = 155;
+
