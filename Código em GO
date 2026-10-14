@@ -1,0 +1,74 @@
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"math"
+	"os"
+	"strconv"
+	"strings"
+)
+
+func main() {
+	scanner := bufio.NewScanner(os.Stdin)
+	peso := lerNumero(scanner, "Seu peso em kg (ex.: 68,5): ")
+	alturaCm := lerNumero(scanner, "Sua altura em cm (ex.: 170): ")
+
+	if math.IsNaN(peso) || math.IsInf(peso, 0) || peso < 2 || peso > 500 {
+		fmt.Fprintln(os.Stderr, "O peso deve estar entre 2 e 500 kg.")
+		os.Exit(1)
+	}
+	if math.IsNaN(alturaCm) || math.IsInf(alturaCm, 0) || alturaCm < 50 || alturaCm > 250 {
+		fmt.Fprintln(os.Stderr, "A altura deve estar entre 50 e 250 cm.")
+		os.Exit(1)
+	}
+
+	alturaM := alturaCm / 100
+	imc := peso / (alturaM * alturaM)
+	classificacao := ""
+	mensagem := "Uma avaliação profissional pode ajudar a interpretar esse resultado no seu contexto."
+
+	switch {
+	case imc < 18.5:
+		classificacao = "Abaixo do peso"
+		mensagem = "Considere conversar com um profissional de saúde para entender esse resultado."
+	case imc < 25:
+		classificacao = "Faixa adequada"
+		mensagem = "Esse resultado está na faixa de referência para adultos."
+	case imc < 30:
+		classificacao = "Sobrepeso"
+	case imc < 35:
+		classificacao = "Obesidade grau I"
+	case imc < 40:
+		classificacao = "Obesidade grau II"
+	default:
+		classificacao = "Obesidade grau III"
+	}
+
+	fmt.Println("\nResultado")
+	fmt.Printf("IMC: %s\n", decimal(imc))
+	fmt.Printf("Classificação: %s\n", classificacao)
+	fmt.Printf("Faixa de referência para sua altura: %s kg a %s kg\n",
+		decimal(18.5*alturaM*alturaM), decimal(24.9*alturaM*alturaM))
+	fmt.Println(mensagem)
+	fmt.Println("O IMC é uma referência geral e não substitui uma avaliação profissional.")
+}
+
+func lerNumero(scanner *bufio.Scanner, prompt string) float64 {
+	fmt.Print(prompt)
+	if !scanner.Scan() {
+		fmt.Fprintln(os.Stderr, "Não foi possível ler o valor.")
+		os.Exit(1)
+	}
+
+	valor, err := strconv.ParseFloat(strings.ReplaceAll(strings.TrimSpace(scanner.Text()), ",", "."), 64)
+	if err != nil {
+		fmt.Fprintln(os.Stderr, "Informe um número válido.")
+		os.Exit(1)
+	}
+	return valor
+}
+
+func decimal(valor float64) string {
+	return strings.ReplaceAll(fmt.Sprintf("%.1f", valor), ".", ",")
+}
